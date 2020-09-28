@@ -1,0 +1,25 @@
+#   (or "http://$(docker-machine ip):8080" if using docker-machine)
+version: '3.1'
+
+services:
+  lamp:
+    build: .
+    container_name: "lamp"
+    restart: always
+    volumes:
+      - ./php:/var/www/html:z
+    ports:
+      - 8080:80
+      - 3306:3306
+  phpmyadmin:
+    image: phpmyadmin:5
+    container_name: "phpmyadmin"
+    environment:
+      PMA_HOST: lamp
+      PMA_USER: student 
+      PMA_PASSWORD: secret 
+      PMA_ARBITRARY: 1
+      UPLOAD_LIMIT: 8192
+    restart: always
+    ports:
+      - 8081:80
